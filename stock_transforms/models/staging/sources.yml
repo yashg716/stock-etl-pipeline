@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: public
+    schema: public
+    tables:
+      - name: stocks_optimized
+        description: "Raw S&P 500 stock data loaded by Python pipeline"
+        columns:
+          - name: ticker
+            tests: [not_null]
+          - name: date
+            tests: [not_null]
+          - name: close

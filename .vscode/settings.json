@@ -1,0 +1,32 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "sshOptions": {
+                "port": 22
+            },
+            "driver": "PostgreSQL",
+            "name": "Project Neon",
+            "connectString": "postgresql://neondb_owner:npg_rluw4cvf0TjG@ep-mute-mode-aqrurqh5-pooler.c-8.us-east-1.aws.neon.tech/neondb"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "db.qijjgvnaozvbndivyofh.supabase.co",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Supabase",
+            "database": "postgres",
+            "username": "postgres",
+            "password": "O5WSDlvRwCou4Ihp"
+        }
+    ],
+    "chat.disableAIFeatures": false
+}

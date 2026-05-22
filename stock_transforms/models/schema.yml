@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_stocks
+    description: "Cleaned staging layer from stocks_optimized"
+    columns:
+      - name: ticker
+        tests: [not_null]
+      - name: date
+        tests: [not_null]
+      - name: close
+        tests: [not_null]
+
+  - name: int_stock_metrics
+    description: "Staging data enriched with yearly aggregates"
+
+  - name: mart_stock_summary
+    description: "Final one-row-per-ticker-per-year summary for analysis"

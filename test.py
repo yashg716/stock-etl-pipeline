@@ -1,1 +1,0 @@
-python -c "import psycopg2; conn = psycopg2.connect(host='ep-mute-mode-aqrurqh5.us-east-1.aws.neon.tech', port=5432, user='neondb_owner', password='npg_UPvVaZR9t8IK', dbname='neondb', sslmode='require'); print('SUCCESS')"

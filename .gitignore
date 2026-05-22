@@ -5,5 +5,5 @@ stock_transforms/dbt_packages/
 __pycache__/
 *.pyc
 *.csv
-*.text
+*.txt
 *.parquet

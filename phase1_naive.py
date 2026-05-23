@@ -10,13 +10,13 @@ load_dotenv()
 CONN = os.getenv("DB_CONN_STRING")
 engine = create_engine(CONN)
 
-# ── Step 1: Get tickers ─────────────────────────────────
+# ── Get tickers ─────────────────────────────────
 url = "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv"
 sp500 = pd.read_csv(url)
 tickers = sp500["Symbol"].str.replace(".", "-", regex=False).tolist()
 print(f"Total tickers: {len(tickers)}")
 
-# ── Step 2: Download data ───────────────────────────────
+# ── Download data ───────────────────────────────
 df = yf.download(
     tickers,
     start="2019-01-01",
@@ -26,7 +26,7 @@ df = yf.download(
     threads=True
 )
 
-# ── Step 3: Flatten to long format ──────────────────────
+# ── Flatten to long format ──────────────────────
 frames = []
 for ticker in tickers:
     try:
@@ -41,12 +41,12 @@ combined = pd.concat(frames, ignore_index=True)
 combined.columns = [c.lower().replace(" ", "_") for c in combined.columns]
 print(f"Shape: {combined.shape}")
 
-# ── Step 4: Save CSV and check size ─────────────────────
+# ── Save CSV and check size ─────────────────────
 combined.to_csv("stock_data_naive.csv", index=False)
 size = os.path.getsize("stock_data_naive.csv")
 print(f"CSV size: {size / (1024*1024):.1f} MB")
 
-# ── Step 5: Load to Neon (naive — all TEXT, no indexes) ─
+# ── Load to Neon (naive — all TEXT, no indexes) ─
 print("\nLoading to Supabase... (this takes 3-5 mins)")
 combined.to_sql(
     "stocks_naive",
@@ -57,7 +57,7 @@ combined.to_sql(
 )
 print("Loaded to Neon")
 
-# ── Step 6: Benchmark ───────────────────────────────────
+# ── Benchmark ───────────────────────────────────
 with engine.connect() as conn:
     count = conn.execute(text("SELECT COUNT(*) FROM stocks_naive")).fetchone()[0]
 

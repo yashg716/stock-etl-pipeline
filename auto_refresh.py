@@ -31,13 +31,13 @@ engine = create_engine(
     os.getenv("DB_CONN_STRING"),
 )
 
-# ── Step 1: Get S&P 500 tickers ─────────────────────────
+# ── Get S&P 500 tickers ─────────────────────────
 def get_tickers():
     url = "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/main/data/constituents.csv"
     sp500 = pd.read_csv(url)
     return sp500["Symbol"].str.replace(".", "-", regex=False).tolist()
 
-# ── Step 2: Find what date we already have in Neon (now supabase) ──────
+# ── Find what date we already have in Neon (now supabase) ──────
 def get_latest_date():
     with engine.connect() as conn:
         result = conn.execute(
@@ -50,7 +50,7 @@ def get_latest_date():
         return datetime.strptime(result, "%Y-%m-%d").date()
     return result
 
-# ── Step 3: Download only missing days ──────────────────
+# ── Download only missing days ──────────────────
 def download_new_data(tickers, from_date):
     start = (from_date + timedelta(days=1)).strftime("%Y-%m-%d")
     end   = datetime.today().strftime("%Y-%m-%d")
@@ -88,7 +88,7 @@ def download_new_data(tickers, from_date):
     print(f"Downloaded {len(combined):,} new rows")
     return combined
 
-# ── Step 4: Compute metrics ─────────────────────────────
+# ── Compute metrics ─────────────────────────────
 def compute_metrics(df):
     df = df.sort_values(["ticker", "date"]).copy()
 
@@ -115,7 +115,7 @@ def compute_metrics(df):
 
     return df
 
-# ── Step 5: Append only new rows to supabase ────────────────
+# ── Append only new rows to supabase ────────────────
 def append_to_supabase(df):
     print(f"Appending {len(df):,} rows to Supabase...")
     start = time.time()

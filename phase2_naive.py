@@ -7,11 +7,11 @@ from sqlalchemy import create_engine, text
 
 # ── Config ──────────────────────────────────────────────
 load_dotenv()
-CONN = os.getenv("NEON_CONN_STRING")
+CONN = os.getenv("DB_CONN_STRING")
 engine = create_engine(CONN)
 
 
-# ── Step 1: Read from stocks_naive ──────────────────────
+# ── Read from stocks_naive ──────────────────────
 print("Reading from stocks_naive...")
 with engine.connect() as conn:
     df = pd.read_sql("SELECT * FROM stocks_naive", conn)
@@ -19,7 +19,7 @@ with engine.connect() as conn:
 print(f"Loaded {len(df):,} rows from stocks_naive")
 
 
-# ── Step 2: Cast columns to proper types ────────────────
+# ── Cast columns to proper types ────────────────
 df["date"]   = pd.to_datetime(df["date"])
 df["open"]   = pd.to_numeric(df["open"],   errors="coerce")
 df["high"]   = pd.to_numeric(df["high"],   errors="coerce")
@@ -35,7 +35,7 @@ df.reset_index(drop=True, inplace=True)
 print(f"After cleaning: {len(df):,} rows")
 
 
-# ── Step 3: Compute metrics ─────────────────────────────
+# ── Compute metrics ─────────────────────────────
 print("Computing metrics...")
 
 # Daily return %
@@ -62,7 +62,7 @@ df["volume_spike"] = (
 print("Metrics computed")
 
 
-# ── Step 4: Write stocks_optimized with proper types ────
+# ── Write stocks_optimized with proper types ────
 print("\nWriting stocks_optimized to database...")
 start = time.time()
 
@@ -80,7 +80,7 @@ elapsed = time.time() - start
 print(f"Loaded in {elapsed:.2f} seconds")
 
 
-# ── Step 5: Add indexes ──────────────────────────────────
+# ── Add indexes ──────────────────────────────────
 print("\nAdding indexes...")
 with engine.connect() as conn:
     conn.execute(text(
@@ -96,7 +96,7 @@ with engine.connect() as conn:
 print("Indexes created")
 
 
-# ── Step 6: Benchmark naive vs optimized ────────────────
+# ──Benchmark naive vs optimized ────────────────
 print("\nBenchmarking...")
 
 # Naive query
@@ -126,7 +126,7 @@ with engine.connect() as conn:
     ).fetchone()[0]
 
 
-# ── Step 7: Results ──────────────────────────────────────
+# ── Results ──────────────────────────────────────
 speedup = naive_time / opt_time if opt_time > 0 else 0
 
 print("\n========= PHASE 2 RESULTS =========")

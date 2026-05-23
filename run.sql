@@ -47,3 +47,16 @@ SELECT
 FROM pg_catalog.pg_statio_user_tables
 WHERE relname LIKE 'stocks%'
 ORDER BY pg_total_relation_size(relid) DESC;
+
+ALTER TABLE stocks_optimized
+ADD COLUMN IF NOT EXISTS daily_return_pct  DOUBLE PRECISION,
+ADD COLUMN IF NOT EXISTS ma_50             DOUBLE PRECISION,
+ADD COLUMN IF NOT EXISTS volatility_30d    DOUBLE PRECISION,
+ADD COLUMN IF NOT EXISTS volume_spike      DOUBLE PRECISION;
+
+
+
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'stocks_optimized'
+ORDER BY ordinal_position;

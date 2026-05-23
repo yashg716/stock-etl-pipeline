@@ -80,18 +80,6 @@ ETL_optimization-project/
 
 ---
 
-## dbt Tests
-
-| Test | Column | Result |
-|------|--------|--------|
-| `not_null` | `close` | ✅ PASS |
-| `not_null` | `date` | ✅ PASS |
-| `not_null` | `ticker` | ✅ PASS |
-| `source not_null` | `date` (source) | ✅ PASS |
-| `source not_null` | `ticker` (source) | ✅ PASS |
-
----
-
 ## How to Run
 
 ### 1. Clone the repo
